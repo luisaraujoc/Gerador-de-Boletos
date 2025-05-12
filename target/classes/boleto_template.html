@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-BR" lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+          @page {
+        size: A4;
+        margin: 1cm;
+    }
+
+    @font-face {
+        font-family: 'DejaVu Sans';
+        src: url('./fontsBoleto/DejaVuSans.ttf') format('truetype');
+    }
+
+    body {
+        font-family: 'DejaVu Sans', sans-serif;
+        font-size: 12px;
+        color: #000;
+        }
+
+    .boleto {
+        width: 100%;
+        max-width: 730px;
+        margin: 0;
+        border: 1px solid #000;
+        padding: 10px;
+    }
+
+    .titulo {
+        font-weight: bold;
+        font-size: 16px;
+        color: red;
+    }
+
+    .linha {
+        border-top: 1px dashed #000;
+        margin: 10px 0;
+    }
+
+    .info {
+        margin-bottom: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 5px;
+    }
+
+    td,
+    th {
+        border: 1px solid #000;
+        padding: 5px;
+    }
+
+    .codigo-barras {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .linha-digitavel {
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="boleto">
+      <div class="titulo">TICO BANK</div>
+
+      <div class="linha-digitavel">${linhaDigitavel}</div>
+
+      <div class="info">Banco: <strong>${banco}</strong> &nbsp;&nbsp; Código:
+        <strong>${codigoBanco}</strong></div>
+      <div class="info">Cedente: <strong>${cedente}</strong> | CNPJ:
+        <strong>${cnpjCedente}</strong></div>
+      <div class="info">Sacado: <strong>${sacado}</strong></div>
+      <div class="info">Vencimento: <strong>${vencimento}</strong> | Valor:
+        <strong>R$ ${valor}</strong></div>
+      <div class="info">Nosso Número: <strong>${nossoNumero}</strong></div>
+
+      <div class="linha"></div>
+
+      <table>
+        <tr>
+          <th>Local de Pagamento</th>
+          <th>Data do Documento</th>
+          <th>Espécie Doc</th>
+          <th>Aceite</th>
+          <th>Data Proc.</th>
+        </tr>
+        <tr>
+          <td>Pagável em qualquer banco até o vencimento</td>
+          <td>${dataDocumento}</td>
+          <td>DM</td>
+          <td>N</td>
+          <td>${dataProcessamento}</td>
+        </tr>
+      </table>
+
+      <div class="codigo-barras">
+        <img src="data:image/png;base64,${codigoBarras}"
+          alt="Código de Barras" />
+      </div>
+    </div>
+  </body>
+</html>
