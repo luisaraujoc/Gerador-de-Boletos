@@ -21,31 +21,42 @@ public class Main {
         String linhaDigitavel = "00190.00009 03212.877009 00397.337171 8 11140000010090";
 
         Map<String, String> dados = extrairComponentesDaLinhaDigitavel(linhaDigitavel);
-        String banco = dados.get("banco");
+        String bancoCodigo = dados.get("banco");
         String moeda = dados.get("moeda");
         String fatorVenc = dados.get("fatorVenc");
         String valorNumerico = dados.get("valorNumerico");
         String campoLivre = dados.get("campoLivre");
 
-        String codigoBarras = gerarCodigoBarras(banco, moeda, fatorVenc, valorNumerico, campoLivre);
+        String codigoBarras = gerarCodigoBarras(bancoCodigo, moeda, fatorVenc, valorNumerico, campoLivre);
         String barcodeBase64 = generateRealBarcode(codigoBarras);
+
+        // Cria o objeto Banco usando o builder (se houver), ou diretamente:
+        Banco banco = new Banco("Banco do Brasil", bancoCodigo);
+
+        // Monta o objeto Boleto com o builder
+        Boleto boleto = new BoletoBuilder()
+                .setBanco(banco)
+                .setCedente("Tico Ltda.")
+                .setSacado("Luis Henrique Araújo Couto")
+                .setVencimento(fatorParaData(fatorVenc))
+                .setValor(formatarValorReais(valorNumerico))
+                .setNossoNumero("32128770000397336")
+                .build();
 
         String htmlTemplate = lerHtml("boleto_template.html");
         htmlTemplate = htmlTemplate
                 .replace("${linhaDigitavel}", linhaDigitavel)
-                .replace("${banco}", banco)
-                .replace("${codigoBanco}", banco) // mesma info, pode adaptar se quiser
-                .replace("${valor}", formatarValorReais(valorNumerico))
-                .replace("${vencimento}", fatorParaData(fatorVenc))
-                .replace("${codigoBarras}", barcodeBase64)
-
-                // Placeholders adicionais
-                .replace("${cedente}", "Tico Ltda.")
+                .replace("${banco}", boleto.getBanco().getNome())
+                .replace("${codigoBanco}", boleto.getBanco().getCodigo())
+                .replace("${cedente}", boleto.getCedente())
                 .replace("${cnpjCedente}", "12.345.678/0001-90")
-                .replace("${sacado}", "Luis Henrique Araújo Couto")
-                .replace("${nossoNumero}", "32128770000397336")
+                .replace("${sacado}", boleto.getSacado())
+                .replace("${vencimento}", boleto.getVencimento())
+                .replace("${valor}", boleto.getValor())
+                .replace("${nossoNumero}", boleto.getNossoNumero())
                 .replace("${dataDocumento}", "14/08/2024")
-                .replace("${dataProcessamento}", "14/08/2024");
+                .replace("${dataProcessamento}", "14/08/2024")
+                .replace("${codigoBarras}", barcodeBase64);
 
         try (OutputStream os = new FileOutputStream("boleto.pdf")) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
@@ -71,7 +82,7 @@ public class Main {
     }
 
     public static String gerarCodigoBarras(String banco, String moeda, String fatorVencimento, String valor,
-            String campoLivre) {
+                                           String campoLivre) {
         String semDV = banco + moeda + fatorVencimento + valor + campoLivre;
         String dvGeral = calculaDigitoModulo11(semDV);
         return banco + moeda + dvGeral + fatorVencimento + valor + campoLivre;
