@@ -38,7 +38,6 @@ public class BuilderBrad implements BuilderBoleto {
 
     @Override
     public String gerarCampoLivre(String agencia, String conta, String nossoNumero, String carteira) {
-        // Tratamento para conta Bradesco (formato varia: pode ter . ou -)
         String contaNumerica = conta.replaceAll("[.-]", "").replaceAll("^0+", "");
         String nossoNumeroNumerico = nossoNumero.replaceAll("[.-]", "").replaceAll("^0+", "");
         

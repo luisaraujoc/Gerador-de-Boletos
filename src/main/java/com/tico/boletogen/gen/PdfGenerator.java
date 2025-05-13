@@ -62,15 +62,14 @@ public final class PdfGenerator {
     }
 
     private static String generateBarcodeBase64(String codigo) throws IOException {
-        // Substituir QRCodeWriter por MultiFormatWriter e usar CODE_128
         com.google.zxing.Writer writer = new com.google.zxing.MultiFormatWriter();
         BitMatrix bitMatrix;
         try {
             bitMatrix = writer.encode(
                     codigo,
-                    BarcodeFormat.CODE_128, // Formato correto para boletos bancários
-                    300, // largura
-                    50 // altura
+                    BarcodeFormat.CODE_128, 
+                    300, 
+                    50
             );
         } catch (com.google.zxing.WriterException e) {
             throw new IOException("Falha ao gerar código de barras", e);

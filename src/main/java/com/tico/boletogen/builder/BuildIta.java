@@ -38,7 +38,6 @@ public class BuildIta implements BuilderBoleto {
 
     @Override
     public String gerarCampoLivre(String agencia, String conta, String nossoNumero, String carteira) {
-        // Tratamento para conta Itaú (formato XXXX-X ou XXXXX-X)
         String contaNumerica = conta.split("-")[0].replaceAll("^0+", "");
         String nossoNumeroNumerico = nossoNumero.replaceAll("[.-]", "").replaceAll("^0+", "");
         

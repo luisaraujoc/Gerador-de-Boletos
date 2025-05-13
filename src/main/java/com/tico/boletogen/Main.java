@@ -27,9 +27,8 @@ public class Main {
                 "RUA MARECHAL RONDON", "69", "CASA DOS FUNDOS", 
                 "GUSMÃO", "EUNAPOLIS", "BA", "45820-000"));
             
-            // Dados corrigidos para evitar o erro
             String agencia = "0792";
-            String conta = "67839-2";  // Removido os zeros iniciais antes do hífen
+            String conta = "67839-2"; 
             String carteira = "17";
             String nossoNumero = "32128770000397337";
             

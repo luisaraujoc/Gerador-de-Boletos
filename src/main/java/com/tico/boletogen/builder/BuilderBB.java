@@ -38,7 +38,6 @@ public class BuilderBB implements BuilderBoleto {
 
     @Override
     public String gerarCampoLivre(String agencia, String conta, String nossoNumero, String carteira) {
-        // Remove o hífen e zeros à esquerda da conta
         String contaNumerica = conta.split("-")[0].replaceAll("^0+", "");
         String digitoConta = conta.contains("-") ? conta.split("-")[1] : "0";
 

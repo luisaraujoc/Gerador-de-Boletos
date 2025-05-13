@@ -63,7 +63,6 @@ public class GeradorBoleto {
     }
 
     private String formatarLinhaDigitavel(String codigoBarras) {
-        // Simplified implementation - can be enhanced according to each bank's rules
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < codigoBarras.length(); i += 5) {
             int end = Math.min(i + 5, codigoBarras.length());
